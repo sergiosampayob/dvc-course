@@ -1,0 +1,23 @@
+name: dvc-course
+on: [push]
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    container: ghcr.io/iterative/cml:0-dvc2-base1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: iterative/setup-cml@v1
+      - name: train
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install -r requirements.txt
+          dvc repro
+
+          git fetch --prune
+          dvc metrics diff --show-md master > report.md
+
+          # Add figure to the report
+          echo '![](./confusion_matrix.png "Confusion Matrix")' >> report.md
+          cml publish ./confusion_matrix.png --md >> report.md
+          cml comment create report.md
