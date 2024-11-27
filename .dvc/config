@@ -1,0 +1,4 @@
+[core]
+    remote = dvc-course
+['remote "dvc-course"']
+    url = /home/sergio.sampayo/work/training/dvc-course/.dvc

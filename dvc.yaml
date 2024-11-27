@@ -1,5 +1,4 @@
 stages:
-
   data_load:
     cmd: python src/stages/data_load.py --config=params.yaml
     deps:
@@ -61,7 +60,11 @@ stages:
     - featurize.target_column
     outs:
     - reports/confusion_matrix.png
-    - reports/confusion_matrix_data.csv
+    plots:
+    - reports/confusion_matrix_data.csv:
+        template: confusion
+        x: predicted
+        y: y_true
     metrics:
     - reports/metrics.json:
         cache: false
